@@ -4,7 +4,7 @@ on:
     branches: [main]
   workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 concurrency:
@@ -18,16 +18,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Importar website (execução única autorizada)
-        run: |
-          if [ ! -f content.js ]; then
-            python3 scripts/import-existing-site.py
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add .
-            git commit -m "Import complete website into root repository"
-            git push origin HEAD:main
-          fi
       - uses: actions/configure-pages@v5
       - name: Detetar fotografias dos álbuns
         run: python3 scripts/build-albums.py
